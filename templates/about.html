@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}О нас{% endblock%}
+{% block content %}
+<!-- Общий текст -->
+<h1>О нас</h1>
+<p></p>
+<p>Добро пожаловать в наш интернет-магазин!</p>
+<p>Мы стремимся сделать онлайн-шопинг удобным, надёжным и приятным.</p>
+<p>Наша команда тщательно подбирает товары, чтобы вы могли находить всё необходимое в одном месте — быстро и с уверенностью в качестве.</p>
+<p>Ваше доверие — наша главная ценность.</p>
+<p>Мы постоянно работаем над улучшением сервиса, чтобы каждый ваш визит оставлял только положительные впечатления.</p>
+<p>Спасибо, что выбираете нас!</p>
+<p></p>
+<!-- Контакты -->
+<section class="mt-5" aria-labelledby="contacts-heading">
+  <h2 id="contacts-heading" class="mb-3">Контакты</h2>
+  <address class="fs-5">
+    <p>&#128222; Телефон: <a href="tel:{{ contact_phone }}" class="link-primary text-decoration-none">{{ contact_phone }}</a></p>
+    <p>&#9993;&#65039; Email: <a href="mailto:{{ email }}" class="link-primary text-decoration-none">{{ email }}</a></p>
+  </address>
+</section>
+{% endblock%}
