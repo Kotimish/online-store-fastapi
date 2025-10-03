@@ -9,7 +9,7 @@ templates = Jinja2Templates(directory="templates")
 
 
 @router.get("/", response_class=HTMLResponse)
-def index(request: Request):
+async def index(request: Request):
     """Главная страница сайта"""
     context = {
         "request": request,
@@ -21,7 +21,7 @@ def index(request: Request):
 
 
 @router.get("/about/", response_class=HTMLResponse)
-def about(request: Request):
+async def about(request: Request):
     """Страница с информацией о сайте"""
     context = {
         "request": request,
@@ -30,18 +30,6 @@ def about(request: Request):
     }
     return templates.TemplateResponse(
         "about.html",
-        context
-    )
-
-
-@router.get("/catalog/", response_class=HTMLResponse)
-def catalog(request: Request):
-    """Страница с каталогом товаров"""
-    context = {
-        "request": request,
-    }
-    return templates.TemplateResponse(
-        "catalog.html",
         context
     )
 

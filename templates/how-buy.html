@@ -2,4 +2,19 @@
 
 {% block title %}Как заказать{% endblock%}
 {% block content %}
+<div>
+    <h2>Покупка</h2>
+    <p>По техническим причинам покупка на сайте временно не возможна</p>
+    <p>Приносим свои извинения за доставленные неудобства</p>
+    <p>Вы можете оформить заказ с самовывозом или с доставкой по указанным контактам</p>
+    <section class="mt-5" aria-labelledby="contacts-heading">
+      <h3 id="contacts-heading" class="mb-3">Контакты</h3>
+      <address class="fs-5">
+        <p>&#128222; Телефон: <a href="tel:{{ contact_phone }}" class="link-primary text-decoration-none">{{ contact_phone }}</a></p>
+        <p>&#9993;&#65039; Email: <a href="mailto:{{ email }}" class="link-primary text-decoration-none">{{ email }}</a></p>
+      </address>
+    </section>
+    <p><strong>Инструкция по доставке и по самовывозу:</strong></p>
+    <a class="nav-link" href="/delivery/">Доставка</a>
+</div>
 {% endblock%}

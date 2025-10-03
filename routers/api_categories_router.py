@@ -1,0 +1,57 @@
+from fastapi import APIRouter, Depends, Query
+
+from interfaces.repositories.category_repository import ICategoryRepository
+from models.category import Category
+from repositories import factory
+
+router = APIRouter(prefix='/api/category', tags=['api_category'])
+
+
+@router.get("/", response_model=list[Category])
+async def get_category(
+        # category_id: int = Query(None, description="Product category"),
+        repository: ICategoryRepository = Depends(factory.create_category_repository),
+):
+    """Получить список Категорий"""
+    categories = await repository.get_all()
+    return categories
+
+
+@router.get("/{category_id}", response_model=Category)
+async def get_category_id(
+        category_id: int,
+        repository: ICategoryRepository = Depends(factory.create_category_repository),
+):
+    """Получить информацию по Категории"""
+    product = await repository.get_by_id(category_id)
+    return product
+
+
+@router.post("/", response_model=Category, status_code=201)
+async def create_category(
+        new_category: Category,
+        repository: ICategoryRepository = Depends(factory.create_category_repository),
+):
+    """Добавить новую Категорию"""
+    product = await repository.create(new_category)
+    return product
+
+
+@router.put("/{category_id}")
+async def edit_category(
+        category_id: int,
+        product: Category,
+        repository: ICategoryRepository = Depends(factory.create_category_repository),
+):
+    """Обновить Категорию"""
+    category = await repository.update(category_id, product)
+    return category
+
+
+@router.delete("/{category_id}")
+async def delete_category(
+        category_id: int,
+        repository: ICategoryRepository = Depends(factory.create_category_repository),
+):
+    """Удалить Категорию"""
+    await repository.delete(category_id)

@@ -1,7 +1,40 @@
 {% extends "base.html" %}
 
-{% block title %}Интернет-магазин{% endblock%}
+{% block title %}Интернет-магазин комплектующих для ПК{% endblock%}
 {% block content %}
-<h1>Добро пожаловать в интернет-магазин!</h1>
-<p></p>
+<div class="text-center">
+    <h1 class="display-4 mb-4">Добро пожаловать в интернет-магазин комплектующих для ПК!</h1>
+
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">&#128722; Каталог товаров</h5>
+                    <p class="card-text">Широкий выбор процессоров, видеокарт и других комплектующих</p>
+                    <a href="/catalog/" class="btn btn-primary">Перейти в каталог</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">&#128666; Доставка и самовывоз</h5>
+                    <p class="card-text">Удобные способы получения заказов по Москве и области</p>
+                    <a href="/delivery/" class="btn btn-primary">Подробнее о доставке</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">&#128222; Как заказать</h5>
+                    <p class="card-text">Процесс оформления заказа и контактная информация</p>
+                    <a href="/how-buy/" class="btn btn-primary">Инструкция по заказу</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock%}
