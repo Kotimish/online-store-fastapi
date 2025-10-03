@@ -9,8 +9,7 @@
     ```
    - Или по SSH
     ```bash
-    git clone github.com:Kotimish/online-store-fastapi
-    cd online-store-fastapi
+    git clone git@github.com:Kotimish/online-store-fastapi.git
     ```
     - Переходим в созданную папку проекта
     ```bash
