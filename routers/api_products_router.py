@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 
 from interfaces.repositories.product_repository import IProductRepository
 from models.product import Product
@@ -24,12 +24,17 @@ async def get_products(
 
 
 @router.get("/{product_id}", response_model=Product)
-async def get_product_id(
+async def get_product_by_id(
         product_id: int,
         repository: IProductRepository = Depends(factory.create_product_repository),
 ):
     """Получить информацию по товару"""
     product = await repository.get_by_id(product_id)
+    if product is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Product with id {product_id} not found"
+        )
     return product
 
 
@@ -40,6 +45,11 @@ async def create_product(
 ):
     """Добавить новый товар"""
     product = await repository.create(new_product)
+    if product is None:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Product with id {new_product.id} already exists"
+        )
     return product
 
 
@@ -51,6 +61,11 @@ async def edit_product(
 ):
     """Обновить товар"""
     product = await repository.update(product_id, product)
+    if product is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Product with id {product_id} not found"
+        )
     return product
 
 
@@ -60,4 +75,10 @@ async def delete_product(
         repository: IProductRepository = Depends(factory.create_product_repository),
 ):
     """Удалить товар"""
-    await repository.delete(product_id)
+    product = await repository.delete(product_id)
+    if product is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Product with id {product_id} not found"
+        )
+    return product

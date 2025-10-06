@@ -1,3 +1,4 @@
+import asyncio
 from pathlib import Path
 
 import settings
@@ -12,72 +13,86 @@ class JSONProductRepository(IProductRepository):
     def __init__(self, file_path: Path | None = None):
         self.file_path: Path = file_path or settings.BASE_DIR / "data" / "products.json"
         self._storage: JSONRepository = JSONRepository(self.file_path)
+        self._lock = asyncio.Lock()
 
-    async def get_next_id(self):
-        products = await self.get_all()
-        last_product = max(products, key=lambda product: product.id)
-        return last_product.id + 1
-
-    async def create(self, new_product: Product) -> Product:
-        products = await self.get_all()
-        new_product.id = await self.get_next_id()
-        products.append(new_product)
-        self._storage.save([
+    async def _save_products(self, products: list[Product]):
+        data = [
             product.model_dump()
             for product in products
-        ])
-        return new_product
+        ]
+        await asyncio.to_thread(self._storage.save, data)
 
-    async def get_by_id(self, idx: int) -> Product:
-        products = await self.get_all()
-        return next(
-            (
-                product
+    async def _load_products(self) -> list[Product]:
+        data = await asyncio.to_thread(self._storage.load)
+        return [Product.model_validate(item) for item in data]
+
+    async def create(self, new_product: Product) -> Product | None:
+        async with self._lock:
+            products = await self._load_products()
+            valid_ids = [
+                product.id
                 for product in products
-                if product.id == idx
-            ),
-            None
-        )
+                if product.id is not None
+            ]
+            if new_product.id is None:
+                new_product.id =  max(valid_ids, default=-1) + 1
+            elif new_product.id in valid_ids:
+                return None
+            products.append(new_product)
+            await self._save_products(products)
+            return new_product
+
+    async def get_by_id(self, idx: int) -> Product | None:
+        async with self._lock:
+            products = await self._load_products()
+            return next(
+                (
+                    product
+                    for product in products
+                    if product.id == idx
+                ),
+                None
+            )
 
     async def get_all(self) -> list[Product]:
-        data = self._storage.load()
-        return [Product(**item) for item in data]
+        async with self._lock:
+            return await self._load_products()
 
     async def update(self, idx: int, new_product: Product) -> Product | None:
-        products = await self.get_all()
-        for number, product in enumerate(products):
-            if product.id == idx:
-                new_product.id = product.id
-                products[number] = new_product
-                self._storage.save([
-                    product.model_dump()
-                    for product in products]
-                )
-                return new_product
-        return None
+        async with self._lock:
+            products = await self._load_products()
+            for number, product in enumerate(products):
+                if product.id == idx:
+                    new_product.id = product.id
+                    products[number] = new_product
+                    await self._save_products(products)
+                    return new_product
+            return None
 
-    async def delete(self, idx: int) -> Product:
-        products = await self.get_all()
-        saved_products = []
-        deleted_products = []
-        for product in products:
-            if product.id == idx:
-                deleted_products.append(product)
-            else:
-                saved_products.append(product)
-        self._storage.save([
-            product.model_dump()
-            for product in saved_products]
-        )
-        return next(
-            (product for product in deleted_products),
-            None
-        )
+    async def delete(self, idx: int) -> Product | None:
+        async with self._lock:
+            products = await self._load_products()
+            saved_products = []
+            deleted_product = None
+            deleted_count = 0
+            for product in products:
+                if product.id == idx:
+                    deleted_product = product
+                    deleted_count += 1
+                else:
+                    saved_products.append(product)
+            await self._save_products(saved_products)
+
+            if deleted_count > 1:
+                # todo добавить лог, что было найдено несколько объектов с одним id
+                pass
+            return deleted_product
 
     async def get_by_category(self, category_id: int) -> list[Product]:
-        products = await self.get_all()
-        return [
-            product
-            for product in products
-            if product.category_id == category_id
-        ]
+        async with self._lock:
+            products = await self._load_products()
+            return [
+                product
+                for product in products
+                if product.category_id == category_id
+            ]
