@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 
 from interfaces.repositories.category_repository import ICategoryRepository
 from models.category import Category
@@ -8,7 +8,7 @@ router = APIRouter(prefix='/api/category', tags=['api_category'])
 
 
 @router.get("/", response_model=list[Category])
-async def get_category(
+async def get_categories(
         # category_id: int = Query(None, description="Product category"),
         repository: ICategoryRepository = Depends(factory.create_category_repository),
 ):
@@ -18,13 +18,18 @@ async def get_category(
 
 
 @router.get("/{category_id}", response_model=Category)
-async def get_category_id(
+async def get_category_by_id(
         category_id: int,
         repository: ICategoryRepository = Depends(factory.create_category_repository),
 ):
     """Получить информацию по Категории"""
-    product = await repository.get_by_id(category_id)
-    return product
+    category = await repository.get_by_id(category_id)
+    if category is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Category with id {category_id} not found"
+        )
+    return category
 
 
 @router.post("/", response_model=Category, status_code=201)
@@ -33,8 +38,13 @@ async def create_category(
         repository: ICategoryRepository = Depends(factory.create_category_repository),
 ):
     """Добавить новую Категорию"""
-    product = await repository.create(new_category)
-    return product
+    category = await repository.create(new_category)
+    if category is None:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Category with id {new_category.id} already exists"
+        )
+    return category
 
 
 @router.put("/{category_id}")
@@ -45,6 +55,11 @@ async def edit_category(
 ):
     """Обновить Категорию"""
     category = await repository.update(category_id, product)
+    if category is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Category with id {category_id} not found"
+        )
     return category
 
 
@@ -54,4 +69,10 @@ async def delete_category(
         repository: ICategoryRepository = Depends(factory.create_category_repository),
 ):
     """Удалить Категорию"""
-    await repository.delete(category_id)
+    category = await repository.delete(category_id)
+    if category is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Category with id {category_id} not found"
+        )
+    return category
