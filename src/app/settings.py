@@ -28,8 +28,8 @@ class Settings(BaseSettings):
         env_prefix="PC_SHOP__",
         env_nested_delimiter="_",
         env_file=(
-            BASE_DIR / ".env.default",
-            BASE_DIR / ".env",
+            ".env.default",
+            ".env",
         ),
     )
     debug: bool = False
