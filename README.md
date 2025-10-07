@@ -20,22 +20,19 @@
     python3 -m venv .venv
     source .venv/bin/activate
     ```
-    PS: Убедитесь, что ваша версия Python не ниже 3.12
-    При необходимости указывайте явно версию Python при создании окружения
+    PS: Убедитесь, что ваша версия Python не ниже 3.12.
+    При необходимости указывайте явно версию Python при создании окружения.
+
     К примеру (для Python3.12)
     ```bash
     python3.12 -m venv .venv
     source .venv/bin/activate
     ```
-3. **Устанавливаем необходимые пакеты с помощью requirements.txt**:
+3. **Устанавливаем необходимые пакеты с помощью poetry**
     ```bash
-    pip install -r requirements.txt
+    poetry install
     ```
+   Если poetry отсутствует, то установите его по следующей инструкции: [ссылка](https://python-poetry.org/docs/#installation)
 4. **Запуск приложения**
     ```bash
-    python app.py
-    ```
-    Или
-    ```bash
-    uvicorn app:app --host=127.0.0.1 --port=8000 --reload=True
-    ```
+    poetry run start
