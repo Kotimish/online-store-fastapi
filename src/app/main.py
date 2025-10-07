@@ -4,9 +4,11 @@ from fastapi import FastAPI
 from src.app.routers.api_categories_router import router as api_categories_router
 from src.app.routers.api_products_router import router as api_products_router
 from src.app.routers.catalog_router import router as catalog_router
+from src.app.routers.health_router import router as health_router
 from src.app.routers.main_pages_router import router as main_pages_router
 
 app = FastAPI()
+app.include_router(health_router)
 app.include_router(main_pages_router)
 app.include_router(api_products_router)
 app.include_router(api_categories_router)
