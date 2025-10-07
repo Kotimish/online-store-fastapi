@@ -1,10 +1,10 @@
 import asyncio
 from pathlib import Path
 
-import settings
-from interfaces.repositories.product_repository import IProductRepository
-from models.product import Product
-from repositories.json.json_repository import JSONRepository
+from src.app import settings
+from src.app.interfaces.repositories.product_repository import IProductRepository
+from src.app.models.product import Product
+from src.app.repositories.json.json_repository import JSONRepository
 
 
 class JSONProductRepository(IProductRepository):

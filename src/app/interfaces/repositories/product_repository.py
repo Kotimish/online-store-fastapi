@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 
-from interfaces.repositories.base_repository import IRepository
-from models.category import Category
-from models.product import Product
+from src.app.interfaces.repositories.base_repository import IRepository
+from src.app.models.product import Product
 
 
 class IProductRepository(IRepository[Product], ABC):

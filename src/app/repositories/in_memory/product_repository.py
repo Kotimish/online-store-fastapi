@@ -1,7 +1,7 @@
 import asyncio
 
-from interfaces.repositories.product_repository import IProductRepository
-from models.product import Product
+from src.app.interfaces.repositories.product_repository import IProductRepository
+from src.app.models.product import Product
 
 
 class InMemoryProductRepository(IProductRepository):

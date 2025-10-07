@@ -3,9 +3,11 @@ from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from src.app import settings
+
 router = APIRouter(tags=['main'])
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=settings.BASE_DIR / "templates")
 
 
 @router.get("/", response_class=HTMLResponse)

@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, Query, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
-from interfaces.repositories.category_repository import ICategoryRepository
-from models.category import Category
-from repositories import factory
+from src.app.interfaces.repositories.category_repository import ICategoryRepository
+from src.app.models.category import Category
+from src.app.repositories import factory
 
 router = APIRouter(prefix='/api/category', tags=['api_category'])
 

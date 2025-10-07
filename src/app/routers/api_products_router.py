@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 
-from interfaces.repositories.product_repository import IProductRepository
-from models.product import Product
-from repositories import factory
+from src.app.interfaces.repositories.product_repository import IProductRepository
+from src.app.models.product import Product
+from src.app.repositories import factory
 
 router = APIRouter(prefix='/api/product', tags=['api_product'])
 
