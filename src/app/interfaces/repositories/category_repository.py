@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from interfaces.repositories.base_repository import IRepository
-from models.category import Category
+from src.app.interfaces.repositories.base_repository import IRepository
+from src.app.models.category import Category
 
 
 class ICategoryRepository(IRepository[Category], ABC):

@@ -1,10 +1,10 @@
 import asyncio
 from pathlib import Path
 
-import settings
-from interfaces.repositories.category_repository import ICategoryRepository
-from models.category import Category
-from repositories.json.json_repository import JSONRepository
+from src.app import settings
+from src.app.interfaces.repositories.category_repository import ICategoryRepository
+from src.app.models.category import Category
+from src.app.repositories.json.json_repository import JSONRepository
 
 
 class JSONCategoryRepository(ICategoryRepository):

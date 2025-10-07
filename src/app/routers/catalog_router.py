@@ -4,14 +4,15 @@ from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
-from interfaces.repositories.category_repository import ICategoryRepository
-from interfaces.repositories.product_repository import IProductRepository
-from models.category import Category
-from models.product import Product
-from repositories import factory
+from src.app import settings
+from src.app.interfaces.repositories.category_repository import ICategoryRepository
+from src.app.interfaces.repositories.product_repository import IProductRepository
+from src.app.models.category import Category
+from src.app.models.product import Product
+from src.app.repositories import factory
 
 router = APIRouter(prefix='/catalog', tags=['catalog'])
-templates = Jinja2Templates(directory='templates')
+templates = Jinja2Templates(directory=settings.BASE_DIR / 'templates')
 
 CATEGORIES = [
     Category(

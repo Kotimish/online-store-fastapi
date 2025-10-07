@@ -1,7 +1,7 @@
 import asyncio
 
-from interfaces.repositories.category_repository import ICategoryRepository
-from models.category import Category
+from src.app.interfaces.repositories.category_repository import ICategoryRepository
+from src.app.models.category import Category
 
 
 class InMemoryCategoryRepository(ICategoryRepository):
