@@ -36,3 +36,15 @@
 4. **Запуск приложения**
     ```bash
     poetry run start
+    ```
+   
+### Сборка и запуск в Docker 
+При необходимости приложение можно запустить в изолированном контейнере с помощью Docker. 
+1. **Собираем Docker-образ**
+    ```bash
+    docker build -t online-store-fastapi .
+    ```
+2. **Запуск контейнера**
+    ```bash
+    docker run -p 8000:8000 --name=online-store-fastapi online-store-fastapi
+    ```
